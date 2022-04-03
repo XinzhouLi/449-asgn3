@@ -1,0 +1,50 @@
+Name:
+HarunoSakura
+
+forced partial assignment:      
+(1,A)
+(2,C)
+
+
+forbidden machine:
+(2,A)
+(3,B)
+(1,C)
+ 
+too-near tasks:
+(B,A) (1,0)
+(A,C) (0,2)
+
+
+machine penalties:
+1 0 0
+0 2 0
+0 0 3
+
+too-near penalities
+(B,A,1) (1,0)
+(A,B,2) (0,1)
+
+
+
+data Constraint = Constraint [Int] [[Bool]] [[Bool]] [[Int]] [[Int]]
+
+[0,2,-1] 
+[[False,False,True],[True,False,False],[False,True,False]] 
+[[False,False,True],[True,False,False],[False,False,False]] 
+[[1,0,0],[0,2,0],[0,0,3]] 
+[[0,2,0],[1,0,0],[0,0,0]]
+
+
+data Constraint = Constraint [Int] [[Bool]] [[Bool]] [[Int]] [[Int]]
+
+getForcedPartial :: Constraint -> [Int]
+getForcedPartial (Constraint forcedPartial _ _ _ _) = forcedPartial
+getForbidden :: Constraint -> [[Bool]]
+getForbidden (Constraint _ forbidden _ _ _) = forbidden
+getNearTask :: Constraint -> [[Bool]]
+getNearTask (Constraint _ _ nearTask _ _) = nearTask
+getMachPenalty :: Constraint -> [[Int]]
+getMachPenalty (Constraint _ _ _ machPenalty _) = machPenalty
+getNearPenalty :: Constraint -> [[Int]]
+getNearPenalty (Constraint _ _ _ _ nearPenalty) = nearPenalty

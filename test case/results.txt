@@ -1,0 +1,21 @@
+wrongkeyword.txt           -> Error while parsing input file x
+wrongkeyword2.txt          -> Error while parsing input file x
+wrongpartialassignment     -> partial assignment error
+invalidtoonear.txt         -> No valid solution possible! x
+invalid2.txt               -> No valid solution possible! X
+invalidforbidden.txt       -> No valid solution possible! x
+wrongmachine.txt           -> invalid machine/task
+wrongtask.txt              -> invalid machine/task
+wrongmachpenalty1.txt      -> machine penalty error x
+wrongmachpenalty2.txt      -> machine penalty error x
+wrongnumbermachine.txt     -> invalid penalty
+wrongtooneartask.txt       -> invalid task X
+wrongnumbertoonear.txt     -> invalid penalty
+garbage.txt                -> Error while parsing input file
+nochoice.txt               -> Solution H G F E D C B A; Quality: 800
+machpen1.txt               -> Solution A B C D E F H G; Quality: 36
+machpen2.txt               -> Solution A B C D E H G F; Quality: 45
+toonearpen1.txt            -> Solution A B C D E H F G; Quality: 16
+toonearpen2.txt            -> Solution A B C D E G F H; Quality: 18
+optzero.txt                -> Solution A B C D E F G H; Quality: 0
+nochoice2.txt              -> Solution A B C D E F G H; Quality: 8
