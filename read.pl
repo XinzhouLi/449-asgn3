@@ -6,12 +6,15 @@ main :-
 	split_input_to_list(List_of_line, List_lines),
 	% write(List_lines),
 	clear_empty_element([a,'',d,'',e], Perfect_lines),
+
+	% check_empty(a,X,[b]),
 	% delete_empty([a,b,'',c,'',d], Perfect_lines),
 	% X = [a,b],
 	% append([],X,Y),
 	% write(Y),
+	% write(Perfect_lines),
+	% sum_of_list([1,2,3],X),
 	write(Perfect_lines),
-
 	close(Stream),
     halt(0).
 
@@ -73,18 +76,18 @@ convert_back(List, FixedList):-
 delete_empty(Input, Output):-
 	clear_empty_element(Input,Output).
 
-clear_empty_element([],X).
+clear_empty_element([],[]).
 clear_empty_element([H|T], Output_list) :-
-
-	check_empty(H, Output_list, Result),
-	write(Result), write(Output_list),write(' pre '),
 	clear_empty_element(T, Result),
-	write(Result),write(Output_list),nl.
+	check_empty(H, Result, Output_list ).
+	% write(Output_list),nl.
 
+check_empty(' ',Input,Output):-
+	append(Input,[] , Output).
 check_empty('',Input,Output):-
 	append(Input,[] , Output).
 check_empty(El, Input, Output):- 
-	append(Input,[El] , Output).
+	append([El], Input , Output).
 
 % clear_empty_element([],_).
 % clear_empty_element([H|T], Output_list) :-
@@ -97,4 +100,10 @@ check_empty(El, Input, Output):-
 % 	append(Input,[],Input).
 % check_empty(El, Input):- 
 % 	append(Input,[El] , Input).
+
+sum_of_list( []     , 0 ) .
+sum_of_list( [N|Ns] , S ) :-
+  sum_of_list(Ns,T) ,
+  S is T+N
+  .
 	
