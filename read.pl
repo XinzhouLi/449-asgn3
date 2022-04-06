@@ -1,24 +1,17 @@
 :- initialization(main).
 
 main :-
+	% dealing the input file.
 	open('machpen1.txt',read, Stream),
-    readLines(Stream, List_of_line, 'res.txt'),
-	split_input_to_list(List_of_line, List_lines),
-	% write(List_lines),
+    read_lines(Stream, List_of_line, 'res.txt'),
+	% convert content into our 
+	split_string_lines(List_of_line, List_lines),
 	clear_empty_element([a,'',d,'',e], Perfect_lines),
-
-	% check_empty(a,X,[b]),
-	% delete_empty([a,b,'',c,'',d], Perfect_lines),
-	% X = [a,b],
-	% append([],X,Y),
-	% write(Y),
-	% write(Perfect_lines),
-	% sum_of_list([1,2,3],X),
 	write(Perfect_lines),
 	close(Stream),
     halt(0).
 
-readLines(InStream,W,OutputFile):- 
+read_lines(InStream,W,OutputFile):- 
 	get_code(InStream,Char), 
 	checkCharAndReadRest(Char,Chars,InStream,OutputFile), 
 	atom_codes(W,Chars). 
@@ -26,17 +19,13 @@ readLines(InStream,W,OutputFile):-
 checkCharAndReadRest(37,[],_,OutputFile):-  
 	printErrorAndClose(OutputFile,"Error while parsing input file").
 	
-	% if char is # symbol for comment
 checkCharAndReadRest(35,[],_,OutputFile):-  
 	printErrorAndClose(OutputFile,"Error while parsing input file").
    
-	% if at end of stream
 checkCharAndReadRest(-1,[],_,_):-  !. 
 	
-	% if at end of file
 checkCharAndReadRest(end_of_file,[],_,_):-  !. 
 	
-	% otherwise keep reading
 checkCharAndReadRest(Char,[Char|Chars],InStream,OutputFile):- 
 	get_code(InStream,NextChar), 
 	checkCharAndReadRest(NextChar,Chars,InStream,OutputFile).
@@ -47,10 +36,8 @@ printErrorAndClose(FileName,ErrorMsg):-
     open(FileName,write,OutputFileStream),
     write(OutputFileStream,ErrorMsg), nl(OutputFileStream),
     close(OutputFileStream).
-    %halt. %Closes SWI-Prolog, but probably needed for final version
 
-
-split_input_to_list(InputText,List):-
+split_string_lines(InputText,List):-
 	new_split_string(InputText, [], Temp),
 	convert_back(Temp, List).
 
@@ -88,22 +75,3 @@ check_empty('',Input,Output):-
 	append(Input,[] , Output).
 check_empty(El, Input, Output):- 
 	append([El], Input , Output).
-
-% clear_empty_element([],_).
-% clear_empty_element([H|T], Output_list) :-
-% 	% write(Output_list),nl,
-% 	check_empty(H, Output_list),
-% 	write(Output_list),write(H),nl,
-% 	clear_empty_element(T, Output_list).
-
-% check_empty('',Input):-
-% 	append(Input,[],Input).
-% check_empty(El, Input):- 
-% 	append(Input,[El] , Input).
-
-sum_of_list( []     , 0 ) .
-sum_of_list( [N|Ns] , S ) :-
-  sum_of_list(Ns,T) ,
-  S is T+N
-  .
-	
