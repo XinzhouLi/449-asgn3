@@ -7,6 +7,7 @@ label('forbidden machine:').
 label('too-near tasks:').
 label('machine penalties:').
 label('too-near penalities').
+space(' ').
 
 main :-
     % get input/output file name from CMD
@@ -14,18 +15,24 @@ main :-
     argument_value(2, OutStream),         % get the second parameter
     readFile(InStream, OutStream, Data),  % read the input file
 
-    get_name(Data, Name),
-    get_forced_partial(Data, FP),
-    get_forbidden_machine(Data, FB),
-    get_toonear_tasks(Data, TK),
-    get_machine_penalties(Data, MP),
-    get_toonear_penalties(Data, TP),
-    write(Name),nl,
-    write(FP),nl,
-    write(FB),nl,
-    write(TK),nl,
-    write(MP),nl,
-    write(TP),nl,
+
+
+    
+    % get_len(Name, Len),
+    % get_forced_partial(Data, FP),
+    % get_forbidden_machine(Data, FB),
+    % get_toonear_tasks(Data, TK),
+    % get_machine_penalties(Data, MP),
+    % get_toonear_penalties(Data, TP),
+
+    % get_first(X,FP),
+    % atom_chars(X, Y),
+    % get_first(Z, Y),
+    % write(FP),nl,
+    % write(FB),nl,
+    % write(TK),nl,
+    % write(MP),nl,
+    % write(TP),nl,
 
 
     halt(0).
@@ -45,7 +52,11 @@ readFile(InStream, OutStream, Data_list) :-
 	close(Stream),
 
     % check the input file labels
-    check_labels(Data_list, OutStream).
+    check_labels(Data_list, OutStream),
+
+    % check name
+    get_name(Data_list, Name),
+    check_name(Name, OutStream).
 
 % read line from input file
 read_lines(InStream, Output_List, OutputFile):- 
@@ -122,7 +133,6 @@ check_empty(El, Input, Output):-
 
 % to check the input file labels
 check_labels(ListOfLines, OutputFile):-
-    % write(X),
     label(X), list_contain_label(X, ListOfLines, OutputFile).
 
 % recursively check if input list contains labels
@@ -163,3 +173,37 @@ get_machine_penalties(List, Output):-
 % get too near penalties
 get_toonear_penalties(List, Output):-
     split(List, 'too-near penalities', _, Output).      % get the data after too-near penalties label
+
+get_len([], 0) :- !.
+get_len([X|Ls], New_len) :-
+    get_len(Ls, Len),
+    New_len is Len + 1. 
+
+
+
+% check name
+check_name([X], Output_file) :-
+    atom_chars(X, Name_char_list),
+    check_leading_space(Name_char_list, Output_file).
+
+
+check_name([X|Xs], Output_file) :- printErrorAndClose(Output_file, 'Error while parsing input file').
+
+get_first([X|Xs], X).
+
+check_leading_space(Elem, OutputFile) :- 
+    % if space at the beginning
+    get_first(Elem, First),
+    space(First)->
+        printErrorAndClose(OutputFile, 'Error while parsing input file');
+        % else
+        clear_empty_element(Elem, Elem_no_trailing),
+        !,
+        % if name contains space
+        member(' ', Elem_no_trailing) ->
+            printErrorAndClose(OutputFile, 'Error while parsing input file');
+            % else
+            write('F').
+    
+    
+check_leading_space(X).
