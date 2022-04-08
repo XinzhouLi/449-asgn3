@@ -174,12 +174,18 @@ get_machine_penalties(List, Output):-
 get_toonear_penalties(List, Output):-
     split(List, 'too-near penalities', _, Output).      % get the data after too-near penalties label
 
+
+
+
+
+
+
+
+
 get_len([], 0) :- !.
 get_len([X|Ls], New_len) :-
     get_len(Ls, Len),
     New_len is Len + 1. 
-
-
 
 % check name
 check_name([X], Output_file) :-
