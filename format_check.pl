@@ -1,4 +1,17 @@
 % :- module(format_check,[check_two_format/2]).
+:- initialization(main).
+
+:- dynamic(add_FP/1,
+    fp/2,
+    add_FM/2,
+    fm/2,
+    add_MP/3,
+    add_mPen/3,
+    mp/3,
+    add_NP/1,
+    np/3,
+    add_TN/1,
+    tn/2).
 
 
 
@@ -173,3 +186,93 @@ without_last([X|Xs], [X|WithoutLast]) :-
 ignore(Goal) :-
     Goal,!.
 ignore(_).
+
+
+
+
+% Add the constrains dynamic facts
+
+
+% partialAssignment add 
+add_FP([]).
+add_FP([H|T]):-
+    atom_chars(H,X),
+    get_sec(X, Ma),
+    get_fou(X, Ta),
+    asserta(fp(Ma, Ta)),
+    add_FP(T).
+
+
+% forbidden machine add
+add_FM([]).
+add_FM([H|T]):-
+    atom_chars(H,X),
+    get_sec(X, Ma),
+    get_fou(X, Ta),
+    asserta(fm(Ma, Ta)),
+    add_FM(T).
+
+add_MP([],_,_).
+add_MP([H|T], Row ,Col):-
+    add_mPen(H, Row, Col),
+    Row is Row + 1,
+    add_MP(T, Row, Col).
+
+add_mPen([],_,_).
+add_mPen([H|T], R, C):-
+    convertLongPen(H, X),
+    asserta(mp(R,C,X)),
+    C is C + 1,
+    add_mPen(T, R, C).
+
+% add toonear task
+add_TN([]).
+add_TN([H|T]):-
+    atom_chars(H, X),
+    get_sec(X, Ta),
+    get_fou(X, Tb),
+    asserta(tn(Ta, Tb)),
+    add_TN(T).
+
+
+
+% add toonear task pen 
+add_NP([]).
+add_NP([H|T]):-
+    atom_chars(H, X),
+    % write(H),
+    get_sec(X, Ta),
+    get_fou(X, Tb),
+    splitOncomma(X, Y), 
+    get_last(Y, R),
+    splitOncomma(R, S),
+    get_last(S, Pen),
+    ignore(without_last(Pen,P)),
+    convertLongPen(P, Z),
+    asserta(np(Ta, Tb, Z)),
+    add_NP(T).
+
+
+% sum up the Char number to Number
+convertLongPen(List, X) :-
+    length(List, 1),
+    nth1(1, List, A),
+    number_atom(A, X), 
+    !.
+convertLongPen(List, X) :-	/*for when List ain't a list, it's a number*/
+    integer(List),
+    number_atom(List, X),
+    !.
+convertLongPen(List, X) :-
+    length(List, 2),
+    nth1(1, List, A), 
+    nth1(2, List, B),
+    number_atom(A, A_atom), 
+    number_atom(B, B_atom),
+    atom_concat(A_atom, B_atom, X), 
+    !.
+convertLongPen(List, X) :-
+    [Head|Tail] = List,
+    number_atom(Head, H_atom),
+    convertLongPen(Tail, Y),
+    atom_concat(H_atom, Y, X).

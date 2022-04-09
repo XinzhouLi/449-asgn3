@@ -1,5 +1,6 @@
 :- initialization(main).
 
+
 % Label constants
 label('Name:').
 label('forced partial assignment:').
@@ -30,8 +31,15 @@ main :-
     check_PA_FM_format(FB, OutStream),
     check_TK_format(TK, OutStream),
     parse_MP(MP, MP_da),
+    write(MP_da),nl,
     check_MP_format(MP_da, OutStream),
     check_TP_format(TP, OutStream),
+    add_FP(FP),
+    add_FM(FB),
+    add_TN(TK),
+    add_MP(MP_da,1,1),
+    add_NP(TP),
+    
     halt(0).
 
 
@@ -104,10 +112,6 @@ convert_back(List, FixedList):-
     atom_chars(FixedFirst,X),
     convert_back(Rest, RestFixed),
     append([FixedFirst],RestFixed,FixedList).
-
-% useless
-% delete_empty(Input, Output):-
-% 	clear_empty_element(Input,Output).
 
 % delete the empty lines
 clear_empty_element([],[]).
