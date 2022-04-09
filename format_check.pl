@@ -133,7 +133,6 @@ check_MP_pen([H|T],OutputFile):-
 check_penalty([]).
 check_penalty([H|T]):-
     % number_atom(X, H),
-    write(H),nl, 
     valPen(H),
     check_penalty(T).
 
@@ -141,7 +140,7 @@ check_penalty([H|T]):-
 check_TT(X,Y,OutputFile):-
     valTask(X),
     valTask(Y)->
-    write('pass TT check'),nl;
+    write('');
     printErrorAndClose(OutputFile, 'invalid task').
 % check Too near penalty 
 
@@ -160,22 +159,16 @@ check_TP_format([H|T],OutputFile):-
     get_last(Y, R),
     splitOncomma(R, S),
     get_last(S, Pen),
-    ignore(without_last(Pen,P)),
-    write(P)
+    ignore(without_last(Pen,P))
     ->
     % write('pass parsing check'),nl,
     check_MP_pen([P],OutputFile), 
-    check_TP_format(T, OutputFile),
-    write('pass Pen check'),nl;
-    write('not pass'),
+    check_TP_format(T, OutputFile);
     printErrorAndClose(OutputFile, 'Error while parsing input file').
    
 without_last([_], []).
 without_last([X|Xs], [X|WithoutLast]) :- 
     without_last(Xs, WithoutLast).
-
-deleteLastElement([Head|Tail], [Head|NTail]):-
-    deleteLastElement(Tail, NTail).
 
 ignore(Goal) :-
     Goal,!.
