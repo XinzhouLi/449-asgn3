@@ -26,8 +26,12 @@ main :-
     write(TK),nl,
     write(MP),nl,
     write(TP),nl,
-
-
+    check_PA_FM_format(FP, OutStream),
+    check_PA_FM_format(FB, OutStream),
+    check_TK_format(TK, OutStream),
+    parse_MP(MP, MP_da),
+    check_MP_format(MP_da, OutStream),
+    check_TP_format(TP, OutStream),
     halt(0).
 
 
