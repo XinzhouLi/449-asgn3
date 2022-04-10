@@ -38,9 +38,30 @@ main :-
     add_TK(TK),
     add_MP(MP_da,1,1),
     add_TP(TP),
+    find_dup_mach(['A','B','C','D','E','F','G','H'],OutStream),
+    find_dup_task(['1','2','3','4','5','6','7','8'],OutStream),
     halt(0).
 
+find_dup_mach([],_).
+find_dup_mach([H|T],OutStream):- 
+    fp(X,H),
+    fp(Y,H),
+    % write(X),
+    % write(Y),nl,
+    isNotEqual(X,Y)
+    ->printErrorAndClose(OutStream,'1partial assignment error');
+    find_dup_mach(T, OutStream).
 
+
+find_dup_task([],_).
+find_dup_task([H|T],OutStream):- 
+    (fp(H,X),
+    fp(H,Y),
+    % write(X),
+    % write(Y),nl,
+    isNotEqual(X,Y))
+    ->printErrorAndClose(OutStream,'2partial assignment error');
+    find_dup_task(T, OutStream).
 
 
 readFile(InStream, OutStream, Data_list) :-
