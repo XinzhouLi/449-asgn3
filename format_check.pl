@@ -11,7 +11,8 @@
     add_TP/1,
     tp/3,
     add_TK/1,
-    tk/2).
+    tk/2,
+    list_to_set/2).
 
 
 
@@ -141,6 +142,23 @@ check_MP_pen([H|T],OutputFile):-
     check_penalty(H)->
     check_MP_pen(T,OutputFile);
     printErrorAndClose(OutputFile, 'invalid penalty').
+
+
+% checks task and mach is not repeated,
+checkValidForced([_,[]],_).
+checkValidForced([H|T],OutputFile):-
+    \+member(H,T) ->
+    distinct(T);
+    printErrorAndClose(OutputFile,"No valid solution possible!").
+
+distinct([]).
+distinct([T]):-
+    findall(T, T, List),
+    % list_to_set(List, Set),
+    member(T, List).
+
+
+
 
 % check every char in penalty is number
 check_penalty([]).
