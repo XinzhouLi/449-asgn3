@@ -31,15 +31,13 @@ main :-
     check_PA_FM_format(FB, OutStream),
     check_TK_format(TK, OutStream),
     parse_MP(MP, MP_da),
-    write(MP_da),nl,
     check_MP_format(MP_da, OutStream),
     check_TP_format(TP, OutStream),
     add_FP(FP),
     add_FM(FB),
-    add_TN(TK),
+    add_TK(TK),
     add_MP(MP_da,1,1),
-    add_NP(TP),
-    
+    add_TP(TP),
     halt(0).
 
 
