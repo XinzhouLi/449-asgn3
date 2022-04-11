@@ -1,5 +1,5 @@
+% the main exection file
 :- initialization(main).
-
 
 % Label constants
 label('Name:').
@@ -27,6 +27,7 @@ main :-
     write(TK),nl,
     write(MP),nl,
     write(TP),nl,
+    check_name(Name, OutStream),
     check_PA_FM_format(FP, OutStream),
     check_PA_FM_format(FB, OutStream),
     check_TK_format(TK, OutStream),
@@ -40,6 +41,18 @@ main :-
     add_TP(TP),
     find_dup_mach(['A','B','C','D','E','F','G','H'],OutStream),
     find_dup_task(['1','2','3','4','5','6','7','8'],OutStream),
+
+    % initial soltion
+    asserta(sol(['A','A','A','A','A','A','A','A'], 9999999)),    
+
+    % run the algorithm to get the minimal penalty solution
+    ignore(algo(['A','B','C','D','E','F','G','H'])),
+    ignore(sol(List, Pen)),
+    write(List), write(Pen), nl,
+    output_result(OutStream),
+    
+
+
     halt(0).
 
 find_dup_mach([],_).
@@ -49,7 +62,7 @@ find_dup_mach([H|T],OutStream):-
     % write(X),
     % write(Y),nl,
     isNotEqual(X,Y)
-    ->printErrorAndClose(OutStream,'1partial assignment error');
+    ->printErrorAndClose(OutStream,'partial assignment error');
     find_dup_mach(T, OutStream).
 
 
@@ -60,7 +73,7 @@ find_dup_task([H|T],OutStream):-
     % write(X),
     % write(Y),nl,
     isNotEqual(X,Y))
-    ->printErrorAndClose(OutStream,'2partial assignment error');
+    ->printErrorAndClose(OutStream,'partial assignment error');
     find_dup_task(T, OutStream).
 
 
@@ -94,9 +107,6 @@ checkCharAndReadRest(37, [], _, OutputFile):-
 
 % to see if reach the end of file
 checkCharAndReadRest(-1, [], _, _):-  !. 
-
-% useless
-% checkCharAndReadRest(end_of_file, [], _, _):-  !. 
 
 % recuresively check the input file
 checkCharAndReadRest(Char,[Char|Chars],InStream,OutputFile):- 
