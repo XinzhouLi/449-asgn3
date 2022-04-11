@@ -1,19 +1,5 @@
-% :- module(format_check,[check_two_format/2]).
-
-
-:- dynamic(add_FP/1,
-    fp/2,
-    add_FM/2,
-    fm/2,
-    add_MP/3,
-    add_mPen/3,
-    mp/3,
-    add_TP/1,
-    tp/3,
-    add_TK/1,
-    tk/2).
-
-
+% the file to check the format of input file
+:- dynamic(fp/2, fm/2, mp/3, tp/3, tk/2).
 
 isRightBracket(')').
 isLeftBracket('(').
@@ -108,8 +94,6 @@ splitOnSpace(Text,Out):-
 splitOnSpace(Text,[Text]).
 
 %splitting at comma
-
-
 splitOncomma([],[]).
 splitOncomma(Text,Out):- 
     append(A1,[','|A2],Text), 
@@ -265,7 +249,15 @@ convertLongPen(List, Y) :-
     get_sec( List, B),
     atom_concat(A, B, X), 
     number_atom(Y, X), 
-
+    !.
+convertLongPen(List, Y) :-
+    length(List, 3),
+    get_fir( List, A), 
+    get_sec( List, B),
+    get_thr(List, C),
+    atom_concat(A, B, X), 
+    atom_concat(X,C, Z),
+    number_atom(Y, Z),
     !.
 convertLongPen(List, Q) :-
     [Head|Tail] = List,
@@ -273,3 +265,31 @@ convertLongPen(List, Q) :-
     number_atom(Y, Z),
     atom_concat(Head, Z, X),
     number_atom(Q, X).
+
+% check name format
+check_name([X], Output_file) :-
+	% convert to char list
+    atom_chars(X, Name_char_list),
+	check_leading_space(Name_char_list, Output_file),
+	check_mid_space(Name_char_list, Output_file).
+
+	
+% error as the name should only contain one line
+check_name([_|_], Output_file) :- printErrorAndClose(Output_file, 'Error while parsing input file').
+
+check_leading_space(Elem, OutputFile) :-
+    % if space at the beginning
+    get_fir(Elem, First),
+    ==(First, ' ')->
+        printErrorAndClose(OutputFile, 'Error while parsing input file');
+        % else
+		true.
+
+check_mid_space(Elem, OutputFile) :-
+	splitOnSpace(Elem, No_trailing_space),
+	!,
+	length(No_trailing_space, List_num),
+	% if contain space in the middle
+	==(List_num, 1) ->
+		true;
+		printErrorAndClose(OutputFile, 'Error while parsing input file').
