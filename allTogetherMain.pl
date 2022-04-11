@@ -32,6 +32,7 @@ main :-
     check_PA_FM_format(FB, OutStream),
     check_TK_format(TK, OutStream),
     parse_MP(MP, MP_da),
+    check_MT_content(MP_da, OutStream),
     check_MP_format(MP_da, OutStream),
     check_TP_format(TP, OutStream),
     add_FP(FP),
@@ -318,8 +319,16 @@ check_MT_col_format([H|T],OutputFile):-
     length(H, Len),
     isNotEqual(Len, 8)-> 
     printErrorAndClose(OutputFile, 'machine penalty error');
-    check_MT_col_format(T,OutputFile),check_MP_pen(H,OutputFile).
-    
+    check_MT_col_format(T,OutputFile).
+    % check_MT_col_format(T,OutputFile),check_MP_pen(H,OutputFile).
+
+% check MP content
+check_MT_content([],_).
+check_MT_content([H|T],OutputFile):-
+    check_MP_pen(H, OutputFile),
+    check_MT_content(T, OutputFile).
+
+
 % check every penalty is valid
 check_MP_pen([],_).
 check_MP_pen([H|T],OutputFile):-
