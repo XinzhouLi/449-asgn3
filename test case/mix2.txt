@@ -1,25 +1,30 @@
 Name:
-2wrong
+mix2
 
 forced partial assignment:
 (1,A)
 (2,B)
-(3,C)
-(4,D)
-(5,E)
+(5,D)
+(7,G)
+(8,H)
 
 forbidden machine:
+(4,C)
  
 too-near tasks:
+(B,F)
+(F,B)
 
 machine penalties:
+100 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1
+1 1 5 1 1 1 1 1
+1 1 1 1 2 2 1 1
+1 1 1 1 1 1 1 1
+1 1 200 1 2 4 1 1
 1 1 1 1 1 1 1 1
 1 1 1 1 1 1 1 1
-1 1 1 1 1 1 1 1
-1 1 1 1 1 1 1 1
-1 1 1 1 1 1 1 1
-1 1 1 1 1 1 1 1
-1 1 1 1 1 1 1 1.5
 
 too-near penalities
-(A,C,4)
+(F,C,3)
+(C,F,3)
