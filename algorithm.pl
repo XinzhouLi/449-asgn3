@@ -57,7 +57,7 @@ cal_pen(List, Pen) :-
 
 	cal_too_near_pen(Task1, Task2, TP1),
 	cal_too_near_pen(Task2, Task3, TP2),
-	cal_too_near_pen(Task3, Task1, TP3),
+	cal_too_near_pen(Task3, Task4, TP3),
 	cal_too_near_pen(Task4, Task5, TP4),
 	cal_too_near_pen(Task5, Task6, TP5),
 	cal_too_near_pen(Task6, Task7, TP6),
